@@ -16,10 +16,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23FF2D78'/%3E%3Ctext x='50' y='69' font-size='58' font-family='Arial,sans-serif' font-weight='800' fill='white' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
 <!-- ===== Dados estruturados (Schema.org) — é assim que o Google entende que
      isto é um negócio local de verdade, com endereço, horários e serviços.
-     Ao publicar, acrescente dentro do JSON abaixo:
+     Ainda falta acrescentar dentro do JSON abaixo, quando tiver os dados:
        "telephone": "+55 82 XXXXX-XXXX",
-       "url": "https://seudominio.com.br",
-       "image": "https://seudominio.com.br/og-vitor.jpg",
        "sameAs": ["https://instagram.com/perfil_do_vitor"]
      Não invente esses valores: dado errado aqui atrapalha mais do que ausência.
      Confira depois em search.google.com/test/rich-results ===== -->
@@ -27,6 +25,8 @@
 {
   "@context": "https://schema.org",
   "@type": "SportsActivityLocation",
+  "url": "https://sitevitorteixeira.vercel.app/",
+  "image": "https://sitevitorteixeira.vercel.app/og-vitor.jpg",
   "name": "Vitor Teixeira — Beach Tennis",
   "description": "Aulas de Beach Tennis em Maceió com Vitor Teixeira. Turmas de no máximo 4 alunos, em quadra coberta, de segunda a quinta.",
   "slogan": "Eleve seu nível no Beach Tennis",
@@ -119,16 +119,15 @@
 }
 </script>
 
-<!-- Ao publicar, descomente e troque pelo domínio real. Sem isso o link
-     compartilhado no Instagram/WhatsApp aparece sem miniatura.
-<link rel="canonical" href="https://seudominio.com.br/">
-<meta property="og:url" content="https://seudominio.com.br/">
-<meta property="og:image" content="https://seudominio.com.br/og-vitor.jpg">
+<link rel="canonical" href="https://sitevitorteixeira.vercel.app/">
+<meta property="og:url" content="https://sitevitorteixeira.vercel.app/">
+<meta property="og:image" content="https://sitevitorteixeira.vercel.app/og-vitor.jpg">
+<meta property="og:image:secure_url" content="https://sitevitorteixeira.vercel.app/og-vitor.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Vitor Teixeira em quadra de Beach Tennis">
-<meta name="twitter:image" content="https://seudominio.com.br/og-vitor.jpg">
--->
+<meta property="og:image:alt" content="Vitor Teixeira em quadra de Beach Tennis — aulas em Maceió">
+<meta name="twitter:image" content="https://sitevitorteixeira.vercel.app/og-vitor.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap">
