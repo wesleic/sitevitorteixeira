@@ -16,18 +16,17 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23FF2D78'/%3E%3Ctext x='50' y='69' font-size='58' font-family='Arial,sans-serif' font-weight='800' fill='white' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
 <!-- ===== Dados estruturados (Schema.org) — é assim que o Google entende que
      isto é um negócio local de verdade, com endereço, horários e serviços.
-     Ainda falta acrescentar dentro do JSON abaixo, quando tiver os dados:
-       "telephone": "+55 82 XXXXX-XXXX",
-       "sameAs": ["https://instagram.com/perfil_do_vitor"]
-     Não invente esses valores: dado errado aqui atrapalha mais do que ausência.
+     Não invente valores aqui: dado errado atrapalha mais do que ausência.
      Confira depois em search.google.com/test/rich-results ===== -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SportsActivityLocation",
   "url": "https://sitevitorteixeira.vercel.app/",
+  "sameAs": ["https://www.instagram.com/vitorteixeirabt/"],
   "image": "https://sitevitorteixeira.vercel.app/og-vitor.jpg",
   "name": "Vitor Teixeira — Beach Tennis",
+  "telephone": "+55 82 99800-9209",
   "description": "Aulas de Beach Tennis em Maceió com Vitor Teixeira. Turmas de no máximo 4 alunos, em quadra coberta, de segunda a quinta.",
   "slogan": "Eleve seu nível no Beach Tennis",
   "sport": "Beach Tennis",
@@ -143,6 +142,9 @@
     --bg:#0B0709;
     --bg-alt:#170D12;
     --line: rgba(255,111,160,.18);
+    /* divisórias ficam em --line; o que é botão usa --line-strong, senão
+       no sol a pílula não se distingue do painel */
+    --line-strong: rgba(255,157,192,.42);
     --tint: rgba(255,45,120,.14);
     --text:#FBEFF3;
     --text-soft:#C7A3B0;
@@ -165,6 +167,10 @@
   h1,h2,h3{ font-family:'Unbounded', system-ui, sans-serif; text-wrap:balance; margin:0; }
   ul{ margin:0; padding:0; list-style:none; }
   :focus-visible{ outline:3px solid var(--pink-bright); outline-offset:3px; }
+  /* quando o próprio elemento fica rosa, o anel rosa some dentro dele: usa branco */
+  .btn:focus-visible,
+  .levels a:focus-visible,
+  .venue-links a:focus-visible{ outline-color:#fff; }
   ::selection{ background:var(--pink); color:var(--bg); }
 
   .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
@@ -175,10 +181,6 @@
   .skip-link:focus{ top:12px; }
 
   .wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
-  .eyebrow{
-    display:inline-block; font:700 .72rem/1 'Instrument Sans',sans-serif;
-    text-transform:uppercase; letter-spacing:.12em; color:var(--pink-bright); margin:0 0 12px;
-  }
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:8px;
@@ -187,7 +189,7 @@
     transition:background .15s ease, transform .15s ease; white-space:nowrap;
   }
   .btn:hover{ background:var(--pink-bright); transform:translateY(-2px); }
-  .btn:active{ transform:translateY(0); }
+  .btn:active{ transform:translateY(1px) scale(.985); }
   .btn-block{ width:100%; }
 
   /* ---------------- header ---------------- */
@@ -210,6 +212,14 @@
   .nav-links{ display:flex; gap:30px; font-size:.92rem; color:var(--text-soft); }
   .nav-links a{ transition:color .15s ease; }
   .nav-links a:hover{ color:var(--pink-bright); }
+  .nav-links a[aria-current="true"]{ color:#fff; }
+  @media (min-width:821px){
+    .nav-links a{ position:relative; }
+    .nav-links a[aria-current="true"]::after{
+      content:""; position:absolute; left:0; right:0; bottom:-6px;
+      height:2px; border-radius:2px; background:var(--pink);
+    }
+  }
   .nav-links-wa{ display:none; } /* shown only in the mobile dropdown; desktop already has the pill CTA */
   .nav-cta{ display:flex; align-items:center; gap:14px; }
 
@@ -250,7 +260,7 @@
   /* ---------------- hero — foto full-bleed ---------------- */
   .hero{
     position:relative; overflow:clip; isolation:isolate;
-    min-height:min(86vh, 780px);
+    min-height:min(86dvh, 780px);
     display:flex; align-items:flex-end;
     padding:120px 0 56px;
     background-color:#0B0709;
@@ -285,7 +295,7 @@
   .btn-outline:hover{ background:rgba(255,255,255,.12); border-color:#fff; }
 
   @media (max-width:720px){
-    .hero{ min-height:min(92vh, 720px); padding:104px 0 44px; background-position:center 12%; }
+    .hero{ min-height:min(92dvh, 720px); padding:104px 0 44px; background-position:center 12%; }
   }
 
 
@@ -326,12 +336,12 @@
   }
 
   /* ---------------- generic section ---------------- */
-  section{ padding:88px 0; }
+  section{ padding:112px 0; }
   section.alt{ background:var(--bg-alt); }
   /* o cabeçalho é fixo (76px): sem isto, clicar num link do menu joga o título
-     da seção para trás dele. A conta é header + 24px de respiro − padding da
-     seção, para o título parar sempre 24px abaixo do cabeçalho. */
-  section[id], footer[id]{ scroll-margin-top:12px; }
+     da seção para trás dele. O padding da seção (112px no desktop, 60px no
+     celular) já cobre a altura do cabeçalho; o valor aqui só ajusta o respiro. */
+  section[id], footer[id]{ scroll-margin-top:0; }
   .section-head{ max-width:60ch; margin-bottom:40px; }
   .section-head h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:800; }
   .lede{ color:var(--text-soft); line-height:1.75; max-width:60ch; }
@@ -358,17 +368,52 @@
   .creds span{ display:block; color:var(--text-soft); font-size:.88rem; line-height:1.5; margin-top:3px; }
 
 
-  /* serviços */
-  .cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:8px; }
-  .card{ position:relative; background:var(--bg-alt); border:1px solid var(--line); border-radius:20px; padding:26px 22px; transition:border-color .15s ease, box-shadow .15s ease; }
-  .card svg{ width:36px; height:36px; margin-bottom:16px; }
-  .card h3{ font-size:1rem; margin-bottom:8px; }
-  .card p{ color:var(--text-soft); font-size:.87rem; line-height:1.6; margin:0; }
-  @media (max-width:960px){ .cards{ grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:520px){ .cards{ grid-template-columns:1fr; } }
+  /* objetivos — sem caixa: níveis e local já usam painel com borda,
+     e um terceiro painel faria a página inteira virar caixa dentro de caixa */
+  .goals{ margin-top:8px; max-width:720px; }
+  .goal + .goal{ border-top:1px solid var(--line); }
+  .goal > a{
+    display:grid; grid-template-columns:auto 1fr auto; gap:20px; align-items:start;
+    padding:24px 0; color:inherit;
+  }
+  .goal-icon{
+    flex:none; width:44px; height:44px; border-radius:12px;
+    background:var(--tint); border:1px solid rgba(255,111,160,.3);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .goal-icon svg{ width:22px; height:22px; margin:0; }
+  .goal h3{
+    font-size:1.05rem; color:#fff; margin:0 0 7px;
+    transition:color .25s cubic-bezier(.16,1,.3,1);
+  }
+  .goal-tag{
+    display:inline-block; margin:0 0 9px;
+    font:700 .72rem 'Instrument Sans',sans-serif;
+    text-transform:uppercase; letter-spacing:.1em; color:var(--text-soft);
+  }
+  /* a porta de entrada é a única presa a um nível: ganha o rosa */
+  .goal-tag.is-entrada{ color:var(--pink-bright); }
+  .goal-desc{ color:var(--text-soft); font-size:.92rem; line-height:1.6; margin:0; max-width:56ch; }
+  .goal-go{
+    align-self:center; color:var(--text-soft); display:flex;
+    transition:color .25s cubic-bezier(.16,1,.3,1), transform .25s cubic-bezier(.16,1,.3,1);
+  }
+  .goal-go svg{ width:20px; height:20px; }
+  .goal > a:hover h3,
+  .goal > a:focus-visible h3{ color:var(--pink-bright); }
+  .goal > a:hover .goal-go,
+  .goal > a:focus-visible .goal-go{ color:var(--pink-bright); transform:translateX(4px); }
+  .goal > a:active{ transform:scale(.995); }
+  @media (prefers-reduced-motion:reduce){
+    .goal h3, .goal-go{ transition:none; }
+  }
+  @media (max-width:560px){
+    .goal > a{ grid-template-columns:auto 1fr; gap:16px; padding:22px 0; }
+    .goal-go{ display:none; }
+    .goal-icon{ width:38px; height:38px; border-radius:10px; }
+    .goal-icon svg{ width:19px; height:19px; }
+  }
 
-  .cards-3{ grid-template-columns:repeat(3,1fr); }
-  @media (max-width:820px){ .cards-3{ grid-template-columns:1fr; } }
   /* local de treino — painel largo, proporção diferente dos cards de aula
      para não parecer um quarto tipo de aula na mesma grade */
   .venue{
@@ -394,12 +439,13 @@
   .venue-links a{
     display:inline-flex; align-items:center; gap:8px;
     padding:14px 17px; border-radius:100px;
-    border:1px solid var(--line); background:var(--bg);
+    border:1px solid var(--line-strong); background:var(--bg);
     font:600 .88rem 'Instrument Sans',sans-serif; color:var(--text);
     transition:color .2s ease, background-color .2s ease, border-color .2s ease;
   }
   .venue-links a:hover,
   .venue-links a:focus-visible{ color:var(--bg); background:var(--pink); border-color:var(--pink); }
+  .venue-links a:active{ transform:scale(.97); }
   .venue-links svg{ width:16px; height:16px; flex:none; }
   @media (max-width:640px){
     .venue{ padding:20px; gap:18px; }
@@ -407,74 +453,37 @@
     .venue-links a{ flex:1 1 auto; justify-content:center; }
   }
 
-  /* ---------------- horários ---------------- */
+  /* ---------------- níveis ---------------- */
   .section-head .lede{ margin-top:14px; }
-  .schedule{
-    margin-top:8px; max-width:520px;
+  /* mesmo painel e mesmas pílulas da grade de turmas anterior */
+  .levels{
+    margin-top:8px; max-width:520px; padding:20px 22px;
     background:var(--bg-alt); border:1px solid var(--line);
     border-radius:20px; overflow:hidden;
+    display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:10px;
   }
-  /* cada bloco é uma turma (par de dias), com o rótulo em linha própria:
-     "Segunda e quarta" é a identidade da turma, não um cabeçalho de coluna */
-  .sched-day{ padding:20px 24px; }
-  .sched-day + .sched-day{ border-top:1px solid var(--line); }
-  .sched-dayname{
-    display:block; margin:0 0 14px;
-    font:800 1.1rem 'Unbounded',sans-serif; letter-spacing:-.02em; color:#fff;
-  }
-  /* colunas alinhadas entre as turmas: dá pra varrer a coluna das 19h de cima a baixo */
-  /* minmax(0,…) para a pílula "cheia", que é mais larga, não empurrar
-     as colunas e desalinhar a grade */
-  .sched-slots{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
-  .sched-slots a{
+  .levels a{
     display:inline-flex; align-items:center; justify-content:center;
     padding:13px 16px; border-radius:100px;
-    border:1px solid var(--line); background:var(--bg);
-    font:700 .95rem 'Instrument Sans',sans-serif;
-    font-variant-numeric:tabular-nums; color:var(--text);
+    border:1px solid var(--line-strong); background:var(--bg);
+    font:700 .95rem 'Instrument Sans',sans-serif; color:var(--text);
     transition:color .25s cubic-bezier(.16,1,.3,1),
                background-color .25s cubic-bezier(.16,1,.3,1),
                border-color .25s cubic-bezier(.16,1,.3,1);
   }
-  .sched-slots a:hover,
-  .sched-slots a:focus-visible{ background:var(--pink); border-color:var(--pink); color:var(--bg); }
+  .levels a:hover,
+  .levels a:focus-visible{ background:var(--pink); border-color:var(--pink); color:var(--bg); }
+  .levels a:active{ transform:scale(.97); }
   /* anel de foco para dentro: o painel tem overflow:hidden e cortaria o outline */
-  .sched-slots a:focus-visible{ outline-offset:-3px; }
-
-  /* turma lotada — ver comentário no HTML para marcar uma */
-  .sched-slots .is-full{
-    display:inline-flex; align-items:center; justify-content:center; gap:7px;
-    padding:12px 16px; border-radius:100px;
-    border:1px dashed var(--line); background:transparent;
-    font:700 .95rem 'Instrument Sans',sans-serif;
-    font-variant-numeric:tabular-nums; color:var(--text-soft);
-  }
-  .sched-slots .is-full em{
-    font:700 .7rem 'Instrument Sans',sans-serif; font-style:normal;
-    text-transform:uppercase; letter-spacing:.08em; color:#FF9DC0;
-  }
-
-  /* a turma cheia continua clicável (lista de espera), mas nunca pode parecer
-     disponível: no toque/foco só a borda e o texto acendem, o fundo fica vazio */
-  .sched-slots a.is-full:hover,
-  .sched-slots a.is-full:focus-visible{
-    background:transparent; border-color:var(--pink-bright); color:var(--text);
-  }
-  .schedule-note{
-    margin:16px 0 0; max-width:520px;
-    color:var(--text-soft); font-size:.88rem; line-height:1.6;
-  }
-  .schedule-cta{ margin-top:22px; }
-  @media (prefers-reduced-motion:reduce){
-    .sched-slots a{ transition:none; }
-  }
-  @media (max-width:560px){
-    .sched-day{ padding:18px; }
-    .sched-dayname{ font-size:.92rem; margin-bottom:12px; }
-    .sched-slots{ gap:8px; }
-    .sched-slots a, .sched-slots .is-full{ padding:13px 10px; }
-    /* no estreito, "cheia" desce para baixo da hora em vez de alargar a coluna */
-    .sched-slots .is-full{ flex-direction:column; gap:1px; padding:9px 6px; }
+  .levels a:focus-visible{ outline-offset:-3px; }
+  .levels-cta{ margin-top:22px; }
+  @media (prefers-reduced-motion:reduce){ .levels a{ transition:none; } }
+  @media (max-width:720px){
+    /* "Iniciante" é bem mais largo que D, C e B: ganha a linha inteira
+       em vez de espremer as quatro colunas */
+    .levels{ grid-template-columns:repeat(3,minmax(0,1fr)); max-width:none; padding:18px; gap:8px; }
+    .levels a:first-child{ grid-column:1 / -1; }
+    .levels a{ padding:13px 10px; }
   }
 
   /* ---------------- galeria ---------------- */
@@ -516,15 +525,64 @@
     .shot-label{ font-size:.78rem; }
   }
 
-  /* depoimentos */
-  .testimonial-empty{
-    background:var(--bg); border:1.5px dashed var(--line); border-radius:20px;
-    padding:44px 28px; text-align:center; margin-top:8px;
+  /* depoimentos — cards: o usuário pediu que a aspa e o formato de card
+     deixem óbvio que é depoimento, não texto corrido da página */
+  .quotes{
+    margin-top:8px; display:grid; gap:18px;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    max-width:920px;
   }
-  .testimonial-empty p{ margin:0 0 8px; color:var(--text-soft); font-size:.98rem; line-height:1.6; }
-  .testimonial-empty p:last-child{ margin-bottom:0; }
-  .testimonial-empty-sub a{ color:var(--pink-bright); font-weight:600; }
-  .testimonial-empty-sub a:hover{ color:#fff; }
+  .quote{
+    position:relative; margin:0;
+    display:flex; flex-direction:column; gap:18px;
+    padding:26px 28px 26px;
+    background:var(--bg); border:1px solid var(--line-strong);
+    border-radius:20px; overflow:hidden;
+  }
+  /* aspa em fluxo, não atrás do texto: como marca d'água ela cruzava a
+     primeira linha no desktop, onde o card é largo e a frase é curta */
+  .quote::before{
+    content:"\201C"; display:block;
+    font:900 68px/.62 'Unbounded',sans-serif; color:var(--pink);
+    height:34px; margin-bottom:-4px; pointer-events:none; user-select:none;
+  }
+  .quote blockquote{
+    position:relative; z-index:1; margin:0; flex:1;
+    color:var(--text); font-size:1.02rem; line-height:1.65;
+  }
+  .quote-by{
+    display:flex; align-items:center; gap:12px;
+    padding-top:18px; border-top:1px solid var(--line);
+  }
+  .quote-ini{
+    flex:none; width:38px; height:38px; border-radius:50%;
+    display:grid; place-items:center;
+    background:var(--pink); color:var(--bg);
+    font:800 .82rem 'Instrument Sans',sans-serif; letter-spacing:.02em;
+  }
+  .quote figcaption{
+    font:700 .76rem 'Instrument Sans',sans-serif;
+    text-transform:uppercase; letter-spacing:.1em; color:var(--pink-bright);
+  }
+  @media (max-width:720px){
+    .quotes{ grid-template-columns:1fr; gap:14px; }
+    .quote{ padding:26px 22px 22px; }
+    .quote::before{ font-size:58px; height:29px; }
+    .quote blockquote{ font-size:1rem; }
+  }
+  .quotes-invite{ margin:30px 0 12px; color:var(--text-soft); font-size:.9rem; line-height:1.6; }
+  /* link virou alvo próprio: inline dentro do parágrafo ele ficava com 39px */
+  .quotes-invite-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 17px; border-radius:100px;
+    border:1px solid var(--line-strong); background:var(--bg);
+    font:600 .88rem 'Instrument Sans',sans-serif; color:var(--text);
+    transition:color .2s ease, background-color .2s ease, border-color .2s ease;
+  }
+  .quotes-invite-cta:hover,
+  .quotes-invite-cta:focus-visible{ color:var(--bg); background:var(--pink); border-color:var(--pink); }
+  .quotes-invite-cta:focus-visible{ outline-color:#fff; }
+  .quotes-invite-cta:active{ transform:scale(.97); }
 
   /* footer */
   footer.site-footer{ background:var(--bg-alt); border-top:1px solid var(--line); padding:60px 0 34px; }
@@ -538,9 +596,6 @@
   .map-card .map-card-body{ padding:14px 16px 12px; }
   .map-card .map-name{ color:#fff; font:700 .92rem 'Instrument Sans',sans-serif; line-height:1.4; margin:0; }
   .map-card .map-category{ font-size:.78rem; color:var(--text-soft); margin:1px 0 7px; line-height:1.4; }
-  .map-card .map-rating{ display:flex; align-items:center; gap:5px; font-size:.8rem; color:var(--text-soft); margin:0 0 5px; line-height:1.4; }
-  .map-card .map-stars{ color:#FFB020; font-size:.82rem; letter-spacing:-1px; }
-  .map-card .map-rating strong{ color:#fff; font-weight:700; }
   .map-card .map-address{ font-size:.82rem; color:var(--text-soft); margin:0 0 12px; line-height:1.4; }
   /* fundo escuro para o iframe não piscar um retângulo branco enquanto carrega
      (ou se o mapa estiver bloqueado/offline) */
@@ -568,11 +623,16 @@
     box-shadow:0 14px 34px -8px rgba(255,45,120,.65);
   }
   .wa-fab svg{ width:28px; height:28px; }
+  .wa-fab.is-hidden{ opacity:0; visibility:hidden; transform:scale(.85); pointer-events:none; }
+  .wa-fab{ transition:opacity .25s ease, transform .25s ease, visibility .25s; }
   .wa-fab::before{
     content:""; position:absolute; inset:0; border-radius:50%; border:2px solid var(--pink);
     animation:wa-pulse 2.4s ease-out infinite;
   }
-  @media (prefers-reduced-motion:reduce){ .wa-fab::before{ animation:none; } }
+  @media (prefers-reduced-motion:reduce){
+    .wa-fab::before{ animation:none; }
+    .wa-fab{ transition:none; }
+  }
   @keyframes wa-pulse{
     0%{ transform:scale(1); opacity:.55; }
     100%{ transform:scale(1.6); opacity:0; }
@@ -606,7 +666,7 @@
 
     <nav id="nav-links" class="nav-links" aria-label="Navegação principal">
       <a href="#sobre">Sobre</a>
-      <a href="#horarios">Horários</a>
+      <a href="#niveis">Níveis</a>
       <a href="#aulas">Aulas</a>
       <a href="#depoimentos">Depoimentos</a>
       <a class="wa-link nav-links-wa" href="#" style="color:var(--pink-bright); font-weight:600;">Falar no WhatsApp</a>
@@ -660,7 +720,6 @@
         </div>
       </div>
       <div>
-        <p class="eyebrow">Quem é o VT</p>
         <h2 style="font-size:clamp(1.4rem,2.6vw,1.9rem); margin-bottom:16px; max-width:22ch;">Vitor Teixeira</h2>
         <p class="lede">Sou Vitor Teixeira, 25 anos, professor de Beach Tennis em Maceió. Trabalho com turmas pequenas para acompanhar de perto a evolução de cada aluno — considerando histórico, limitações e objetivos, sempre no ritmo de cada pessoa.</p>
         <ul class="creds">
@@ -681,43 +740,20 @@
     </div>
   </section>
 
-  <!-- ================= HORÁRIOS ================= -->
-  <section id="horarios">
+  <!-- ================= NÍVEIS ================= -->
+  <section id="niveis">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Horários</p>
-        <h2>Escolha a sua turma</h2>
-        <p class="lede">Cada turma treina duas vezes por semana, sempre no mesmo horário, com <strong>no máximo 4 alunos</strong> e em <strong>quadra coberta</strong>. Toque na que te serve: a conversa no WhatsApp já começa por ela, e o Vitor confirma se ainda tem vaga.</p>
+        <h2>Escolha o seu nível</h2>
+        <p class="lede">Cada turma treina duas vezes por semana, com <strong>no máximo 4 alunos</strong> e em <strong>quadra coberta</strong>. Toque no seu nível: a conversa no WhatsApp já começa por ele, e o Vitor te passa os horários com vaga.</p>
       </div>
 
-      <!-- Turma lotada? Acrescente a classe is-full no <a> daquele horário, troque o
-           texto para: 19h <em>cheia</em>, e troque a mensagem e o aria-label pelos de
-           lista de espera (veja o exemplo das 20h de segunda e quarta, logo abaixo).
-           Ela continua clicável de propósito: quem queria aquele horário entra na lista
-           em vez de sair do site. Se nenhuma turma estiver cheia, apague também a
-           linha "Turma cheia ainda vale o toque" depois do quadro. -->
-      <div class="schedule">
-        <div class="sched-day">
-          <span class="sched-dayname">Segunda e quarta</span>
-          <div class="sched-slots">
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de segunda e quarta às 17h." aria-label="Turma de segunda e quarta às 17h — falar no WhatsApp">17h</a>
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de segunda e quarta às 18h." aria-label="Turma de segunda e quarta às 18h — falar no WhatsApp">18h</a>
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de segunda e quarta às 19h." aria-label="Turma de segunda e quarta às 19h — falar no WhatsApp">19h</a>
-            <a class="wa-link is-full" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. A turma de segunda e quarta às 20h está cheia — queria entrar na lista de espera." aria-label="Turma de segunda e quarta às 20h — sem vaga, entrar na lista de espera pelo WhatsApp">20h <em>cheia</em></a>
-          </div>
-        </div>
-        <div class="sched-day">
-          <span class="sched-dayname">Terça e quinta</span>
-          <div class="sched-slots">
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de terça e quinta às 17h." aria-label="Turma de terça e quinta às 17h — falar no WhatsApp">17h</a>
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de terça e quinta às 18h." aria-label="Turma de terça e quinta às 18h — falar no WhatsApp">18h</a>
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de terça e quinta às 19h." aria-label="Turma de terça e quinta às 19h — falar no WhatsApp">19h</a>
-            <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e quero saber sobre a turma de terça e quinta às 20h." aria-label="Turma de terça e quinta às 20h — falar no WhatsApp">20h</a>
-          </div>
-        </div>
+      <div class="levels">
+        <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Sou iniciante e quero saber sobre as aulas." aria-label="Nível iniciante — falar no WhatsApp">Iniciante</a>
+        <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Jogo na categoria D e quero saber sobre as aulas." aria-label="Categoria D — falar no WhatsApp">D</a>
+        <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Jogo na categoria C e quero saber sobre as aulas." aria-label="Categoria C — falar no WhatsApp">C</a>
+        <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Jogo na categoria B e quero saber sobre as aulas." aria-label="Categoria B — falar no WhatsApp">B</a>
       </div>
-
-      <p class="schedule-note">Turma cheia ainda vale o toque: dá para entrar na lista de espera e ser avisado quando abrir vaga.</p>
 
       <div class="venue">
         <span class="venue-icon">
@@ -740,8 +776,8 @@
         </div>
       </div>
 
-      <div class="schedule-cta">
-        <a class="btn wa-link" href="#">Falar sobre os horários</a>
+      <div class="levels-cta">
+        <a class="btn wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Não sei em que nível me encaixo e queria uma ajuda para descobrir.">Não sei meu nível</a>
       </div>
     </div>
   </section>
@@ -750,27 +786,44 @@
   <section id="aulas">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Aulas e treinamentos</p>
         <h2>Como podemos evoluir?</h2>
         <p class="lede">Todas as turmas têm <strong>no máximo 4 alunos</strong>, em <strong>quadra coberta</strong> — perto o bastante para acompanhar e corrigir cada pessoa durante a aula, sem sol forte nem chuva atrapalhando o treino.</p>
       </div>
-      <div class="cards cards-3">
-        <div class="card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FF2D78" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-3.3-2.7-6-6-6-.5 2.8 1.3 5.5 4 6 .7.1 1.4.1 2 0z"/><path d="M12 12c0-3.3 2.7-6 6-6 .5 2.8-1.3 5.5-4 6-.7.1-1.4.1-2 0z"/></svg>
-          <h3>Iniciação ao Beach Tennis</h3>
-          <p>Nunca jogou? Aprenda os fundamentos básicos: saque, forehand, backhand e posicionamento na areia, de forma paciente e didática.</p>
-        </div>
-        <div class="card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FF2D78" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22c-4 0-6.5-2.6-6.5-6.2 0-2.7 1.7-4.3 2.3-6.5.4 1.6 1.5 2.5 1.5 2.5-.8-3 .8-5.7 3.3-7.3-.7 2.6.5 4.4 2 6 1.4 1.4 3.4 3 3.4 5.3 0 3.6-2.5 6.2-6 6.2z"/></svg>
-          <h3>Treinamento Específico</h3>
-          <p>Aprimoramento técnico, posicionamento em quadra, leitura de jogo e condicionamento físico para a areia.</p>
-        </div>
-        <div class="card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FF2D78" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3h8l-2.2 5.3"/><path d="M16 3h-8l2.2 5.3"/><circle cx="12" cy="14.5" r="6.5"/><path d="M12 11.3 12.9 13.2 15 13.5 13.5 15 13.9 17.1 12 16.1 10.1 17.1 10.5 15 9 13.5 11.1 13.2 12 11.3Z"/></svg>
-          <h3>Preparação p/ Torneios</h3>
-          <p>Foco em situações reais de jogo, estratégias de dupla e preparação mental para torneios e campeonatos de Beach Tennis.</p>
-        </div>
-      </div>
+      <ul class="goals">
+        <li class="goal">
+          <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Nunca joguei e quero começar na iniciação ao Beach Tennis." aria-label="Iniciação ao Beach Tennis — falar no WhatsApp">
+            <span class="goal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#FF2D78" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-9"/><path d="M12 12c0-3.3-2.7-6-6-6-.5 2.8 1.3 5.5 4 6 .7.1 1.4.1 2 0z"/><path d="M12 12c0-3.3 2.7-6 6-6 .5 2.8-1.3 5.5-4 6-.7.1-1.4.1-2 0z"/></svg></span>
+            <span class="goal-body">
+              <h3>Iniciação ao Beach Tennis</h3>
+              <span class="goal-tag is-entrada">Para quem nunca jogou</span>
+              <p class="goal-desc">Fundamentos básicos: saque, forehand, backhand e posicionamento na areia, de forma paciente e didática.</p>
+            </span>
+            <span class="goal-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg></span>
+          </a>
+        </li>
+        <li class="goal">
+          <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Quero saber sobre o treinamento específico." aria-label="Treinamento Específico — falar no WhatsApp">
+            <span class="goal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#FF2D78" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22c-4 0-6.5-2.6-6.5-6.2 0-2.7 1.7-4.3 2.3-6.5.4 1.6 1.5 2.5 1.5 2.5-.8-3 .8-5.7 3.3-7.3-.7 2.6.5 4.4 2 6 1.4 1.4 3.4 3 3.4 5.3 0 3.6-2.5 6.2-6 6.2z"/></svg></span>
+            <span class="goal-body">
+              <h3>Treinamento Específico</h3>
+              <span class="goal-tag">Todos os níveis</span>
+              <p class="goal-desc">Aprimoramento técnico, posicionamento em quadra, leitura de jogo e condicionamento físico para a areia.</p>
+            </span>
+            <span class="goal-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg></span>
+          </a>
+        </li>
+        <li class="goal">
+          <a class="wa-link" href="#" data-wa-msg="Olá, Vitor! Vim pelo site. Quero saber sobre a preparação para torneios." aria-label="Preparação p/ Torneios — falar no WhatsApp">
+            <span class="goal-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#FF2D78" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3h8l-2.2 5.3"/><path d="M16 3h-8l2.2 5.3"/><circle cx="12" cy="14.5" r="6.5"/><path d="M12 11.3 12.9 13.2 15 13.5 13.5 15 13.9 17.1 12 16.1 10.1 17.1 10.5 15 9 13.5 11.1 13.2 12 11.3Z"/></svg></span>
+            <span class="goal-body">
+              <h3>Preparação p/ Torneios</h3>
+              <span class="goal-tag">Todos os níveis</span>
+              <p class="goal-desc">Foco em situações reais de jogo, estratégias de dupla e preparação mental para torneios e campeonatos de Beach Tennis.</p>
+            </span>
+            <span class="goal-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12 5 7 7-7 7"/></svg></span>
+          </a>
+        </li>
+      </ul>
 
     </div>
   </section>
@@ -779,7 +832,6 @@
   <section id="galeria">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Galeria</p>
         <h2>Por dentro da turma</h2>
         <p class="lede">Os treinos, os torneios e o que acontece em volta da quadra.</p>
       </div>
@@ -806,13 +858,28 @@
   <section class="alt" id="depoimentos">
     <div class="wrap">
       <div class="section-head">
-        <p class="eyebrow">Depoimentos</p>
         <h2>Quem já deu o primeiro passo</h2>
       </div>
-      <div class="testimonial-empty">
-        <p>Os primeiros depoimentos de alunos chegam em breve.</p>
-        <p class="testimonial-empty-sub">Já treina com o Vitor? <a class="wa-link" href="#">Manda sua experiência pelo WhatsApp</a> e talvez ela apareça aqui.</p>
+      <div class="quotes">
+        <figure class="quote">
+          <blockquote>“A didática do Vitor é sensacional. Corrigiu diversos vícios errados, e em poucos meses já estava ganhando meus primeiros torneios.”</blockquote>
+          <div class="quote-by">
+            <span class="quote-ini" aria-hidden="true">WC</span>
+            <figcaption>Weslei Carvalho</figcaption>
+          </div>
+        </figure>
+        <figure class="quote">
+          <blockquote>“O Vitor é o treinador perfeito para quem quer corrigir os fundamentos. Trouxe mais volume ao meu jogo, e a aula é leve e dinâmica.”</blockquote>
+          <div class="quote-by">
+            <span class="quote-ini" aria-hidden="true">LT</span>
+            <figcaption>Lucas Tonial</figcaption>
+          </div>
+        </figure>
       </div>
+
+      <p class="quotes-invite">Já treina com o Vitor?</p>
+      <a class="wa-link quotes-invite-cta" href="#" data-wa-msg="Olá, Vitor! Vim pelo site e queria deixar um depoimento sobre as aulas.">Deixar meu depoimento</a>
+
     </div>
   </section>
 
@@ -829,7 +896,7 @@
       <div>
         <div class="col-title">Contato</div>
         <a class="wa-link" href="#">WhatsApp</a>
-        <a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a> <!-- TODO: trocar pelo perfil real, ex. https://instagram.com/seu_usuario -->
+        <a href="https://www.instagram.com/vitorteixeirabt/" target="_blank" rel="noopener">Instagram</a>
         <p>Maceió — AL</p>
       </div>
       <div>
@@ -838,7 +905,6 @@
           <div class="map-card-body">
             <p class="map-name">Arena Lyra Academy</p>
             <p class="map-category">Arena de Beach Tennis</p>
-            <p class="map-rating"><span class="map-stars">★★★★★</span><strong>4.8</strong><span>(137)</span> · Arena</p>
             <p class="map-address">Rua Doutor Celso Piatti, 350 — Jaraguá</p>
           </div>
           <iframe class="map-frame" src="https://www.google.com/maps?q=Arena%20Lyra%20Academy%2C%20Rua%20Doutor%20Celso%20Piatti%2C%20350%2C%20Jaragu%C3%A1%2C%20Macei%C3%B3&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa: Arena Lyra Academy, Rua Doutor Celso Piatti, 350, Jaraguá, Maceió"></iframe>
@@ -862,7 +928,7 @@
   /* -----------------------------------------------------------
      1) WhatsApp — configure aqui uma única vez
      ----------------------------------------------------------- */
-  var WHATSAPP_NUMERO = "5582900000000"; // <-- troque pelo número real, formato DDI+DDD+número, só dígitos
+  var WHATSAPP_NUMERO = "5582998009209"; // DDI 55 + DDD 82 + número, só dígitos
   var WHATSAPP_MSG = "Olá, Vitor! Vim pelo site e quero saber mais sobre as aulas de Beach Tennis.";
   // Cada link usa a mensagem padrão, a menos que traga a sua própria em data-wa-msg
   // (é assim que cada horário abre a conversa já dizendo de qual horário se trata).
@@ -904,6 +970,54 @@
      3) Cabeçalho com fundo ao rolar — via IntersectionObserver,
         sem listener de scroll (mais leve no celular).
      ----------------------------------------------------------- */
+  /* -----------------------------------------------------------
+     3b) O botão flutuante fica em cima das pílulas de nível em certas
+         posições de rolagem. Some enquanto a seção de níveis está na
+         tela — ela já tem o próprio botão de WhatsApp.
+     ----------------------------------------------------------- */
+  var fab = document.querySelector(".wa-fab");
+  var secNiveis = document.getElementById("niveis");
+  if ("IntersectionObserver" in window && fab && secNiveis){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ fab.classList.toggle("is-hidden", e.isIntersecting); });
+    }, { threshold: 0.12 }).observe(secNiveis);
+  }
+
+  /* -----------------------------------------------------------
+     3c) Marca no menu a seção que está sendo vista. Usa a última seção
+         cujo topo já passou pelo cabeçalho — assim uma seção que não
+         está no menu (Galeria) não faz o menu marcar a seguinte.
+     ----------------------------------------------------------- */
+  var navAlvos = [];
+  document.querySelectorAll(".nav-links a[href^='#']").forEach(function(a){
+    var alvo = document.getElementById(a.getAttribute("href").slice(1));
+    if (alvo) navAlvos.push({ link: a, sec: alvo });
+  });
+  if (navAlvos.length){
+    var marcando = false;
+    var marcarSecao = function(){
+      marcando = false;
+      var linha = (parseInt(getComputedStyle(document.documentElement)
+                    .getPropertyValue("--header-h"), 10) || 76) + 8;
+      var atual = null;
+      navAlvos.forEach(function(item){
+        if (item.sec.getBoundingClientRect().top <= linha) atual = item;
+      });
+      // no fim da página, marca a última seção do menu
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4){
+        atual = navAlvos[navAlvos.length - 1];
+      }
+      navAlvos.forEach(function(item){
+        if (item === atual) item.link.setAttribute("aria-current", "true");
+        else item.link.removeAttribute("aria-current");
+      });
+    };
+    addEventListener("scroll", function(){
+      if (!marcando){ marcando = true; requestAnimationFrame(marcarSecao); }
+    }, { passive: true });
+    marcarSecao();
+  }
+
   var header = document.getElementById("site-header");
   var topSentinel = document.getElementById("topo");
   if ("IntersectionObserver" in window && topSentinel){
